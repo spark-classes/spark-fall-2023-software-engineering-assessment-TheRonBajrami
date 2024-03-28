@@ -1,3 +1,5 @@
+import { DataGrid } from '@mui/x-data-grid';
+
 /**
  * You might find it useful to have some dummy data for your own testing.
  * Feel free to write this function if you find that feature desirable.
@@ -16,7 +18,6 @@ export function dummyData() {
  * You might need to change the signature of this function.
  *
  */
-import { DataGrid } from '@mui/x-data-grid';
 
 export const GradeTable = () => {
   const columns = [
