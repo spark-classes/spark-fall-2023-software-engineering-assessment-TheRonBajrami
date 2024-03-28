@@ -16,6 +16,49 @@ export function dummyData() {
  * You might need to change the signature of this function.
  *
  */
+import { DataGrid } from '@mui/x-data-grid';
+
 export const GradeTable = () => {
-  return <></>;
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'firstName',
+      headerName: 'First name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'lastName',
+      headerName: 'Last name',
+      width: 150,
+      editable: true,
+    },
+    {
+      field: 'grade',
+      headerName: 'Grade',
+      type: 'number',
+      width: 110,
+      editable: true,
+    },
+  ];
+
+  const rows = [
+    { id: 1, lastName: 'Snow', firstName: 'Jon', grade: 35 },
+    { id: 2, lastName: 'Lannister', firstName: 'Cersei', grade: 67 },
+    // Add more rows as per your data
+  ];
+
+  return (
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+        disableSelectionOnClick
+        experimentalFeatures={{ newEditingApi: true }}
+      />
+    </div>
+  );
 };
