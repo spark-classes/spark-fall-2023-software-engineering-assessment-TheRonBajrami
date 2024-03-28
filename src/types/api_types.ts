@@ -17,3 +17,20 @@ export interface IUniversityClass {
   status: string;
   semester: string;
 }
+export interface IStudent {
+  studentId: string;
+  firstName: string;
+  lastName: string;
+}
+
+export interface IAssignment {
+  assignmentId: string;
+  title: string;
+  grade: number; // Assuming grade is a numeric value
+  weight: number; // Assuming weight is a percentage represented as a number (e.g., 0.25 for 25%)
+}
+
+export interface IStudentGrade {
+  studentId: string;
+  finalGrade: number;
+}

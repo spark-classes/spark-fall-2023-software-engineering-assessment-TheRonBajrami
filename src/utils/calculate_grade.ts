@@ -6,7 +6,8 @@
  *
  * Anything that has a type of "undefined" you will need to replace with something.
  */
-import { IUniversityClass } from "../types/api_types";
+import { IUniversityClass, IAssignment, IStudentGrade } from "../types/api_types";
+import { GET_DEFAULT_HEADERS, BASE_API_URL, MY_BU_ID } from "../globals"; // Added MY_BU_ID import
 
 /**
  * This function might help you write the function below.
@@ -16,10 +17,14 @@ import { IUniversityClass } from "../types/api_types";
  */
 export async function calculateStudentFinalGrade(
   studentID: string,
-  classAssignments: undefined,
+  classAssignments: IAssignment[],
   klass: IUniversityClass
-): Promise<undefined> {
-  return undefined;
+): Promise<number> {
+  let finalGrade = 0;
+  classAssignments.forEach(assignment => {
+    finalGrade += assignment.grade * assignment.weight;
+  });
+  return finalGrade;
 }
 
 /**
@@ -30,6 +35,62 @@ export async function calculateStudentFinalGrade(
  * @param classID The ID of the class for which we want to calculate the final grades
  * @returns Some data structure that has a list of each student and their final grade.
  */
-export async function calcAllFinalGrade(classID: string): Promise<undefined> {
-  return undefined;
+export async function calcAllFinalGrade(classID: string): Promise<IStudentGrade[]> {
+  const classes = await fetchClasses("Fall2023");
+  const classAssignments = await fetchAssignments(classID);
+  const students = await fetchStudents(classID);
+
+  const currentClass: IUniversityClass = { classId: "yourClassId", title: "Class Title", description: "Class Description", meetingTime: "Class Time", meetingLocation: "Class Location", status: "Class Status", semester: "Class Semester" };
+
+  const studentGrades: IStudentGrade[] = [];
+  for (const student of students) {
+    const studentFinalGrade = await calculateStudentFinalGrade(student.studentId, classAssignments, currentClass);
+    studentGrades.push({ studentId: student.studentId, finalGrade: studentFinalGrade });
+  }
+  return studentGrades;
+}
+
+export async function fetchClasses(semester: string) {
+  const response = await fetch(`${BASE_API_URL}/class/listBySemester/${semester}`, {
+    method: "GET",
+    headers: {
+      ...GET_DEFAULT_HEADERS(),
+      "BU-ID": MY_BU_ID,
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch classes");
+    return [];
+  }
+  return await response.json();
+}
+
+export async function fetchAssignments(classId: string) {
+  const response = await fetch(`${BASE_API_URL}/class/listAssignments/${classId}`, {
+    method: "GET",
+    headers: {
+      ...GET_DEFAULT_HEADERS(),
+      "BU-ID": MY_BU_ID,
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch assignments");
+    return [];
+  }
+  return await response.json();
+}
+
+export async function fetchStudents(classId: string) {
+  const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}`, {
+    method: "GET",
+    headers: {
+      ...GET_DEFAULT_HEADERS(),
+      "BU-ID": MY_BU_ID,
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch students");
+    return [];
+  }
+  return await response.json();
 }

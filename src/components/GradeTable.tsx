@@ -1,4 +1,5 @@
 import { DataGrid } from '@mui/x-data-grid';
+import { IUniversityClass } from "../types/api_types";
 
 /**
  * You might find it useful to have some dummy data for your own testing.
@@ -19,33 +20,19 @@ export function dummyData() {
  *
  */
 
-export const GradeTable = () => {
+export const GradeTable = ({ classList }: { classList: IUniversityClass[] }) => {
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
-    {
-      field: 'firstName',
-      headerName: 'First name',
-      width: 150,
-      editable: true,
-    },
-    {
-      field: 'lastName',
-      headerName: 'Last name',
-      width: 150,
-      editable: true,
-    },
-    {
-      field: 'grade',
-      headerName: 'Grade',
-      type: 'number',
-      width: 110,
-      editable: true,
-    },
+    { field: 'studentId', headerName: 'Student ID', width: 120 },
+    { field: 'studentName', headerName: 'Student Name', width: 150 },
+    { field: 'classId', headerName: 'Class ID', width: 120 },
+    { field: 'className', headerName: 'Class Name', width: 150 },
+    { field: 'semester', headerName: 'Semester', width: 120 },
+    { field: 'finalGrade', headerName: 'Final Grade', width: 120 },
   ];
 
   const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', grade: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', grade: 67 },
+    { id: 1, studentId: 'S001', studentName: 'Alice', classId: 'C001', className: 'Math', semester: 'Spring', finalGrade: 85 },
+    { id: 2, studentId: 'S002', studentName: 'Bob', classId: 'C002', className: 'Science', semester: 'Fall', finalGrade: 78 },
     // Add more rows as per your data
   ];
 
