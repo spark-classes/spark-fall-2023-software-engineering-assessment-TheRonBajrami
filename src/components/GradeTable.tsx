@@ -2,6 +2,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { IUniversityClass, IStudentGrade, IStudent } from "../types/api_types";
 import React, { useEffect, useState } from 'react';
 import { fetchStudentsInClass } from '../utils/calculate_grade';
+import { fetchStudentById } from '../App';
 
 /**
  * You might find it useful to have some dummy data for your own testing.
@@ -36,10 +37,18 @@ export const GradeTable = ({ classData, gradeData }: { classData: IUniversityCla
 
   useEffect(() => {
     const fetchData = async () => {
-      if (classData.length > 0) {
+      if (classData.length > 0 && gradeData.length > 0) {
         const students: IStudent[] | undefined = await fetchStudentsInClass(classData[0].classId);
-        if (students !== undefined && students !== null) {
-          setRows(students.map((student: IStudent, index: number) => ({
+        if (students) {
+          const detailedStudents = await Promise.all(students.map(async (student) => {
+            const detailedStudent = await fetchStudentById(student.studentId);
+            return {
+              ...student,
+              firstName: detailedStudent.firstName,
+              lastName: detailedStudent.lastName,
+            };
+          }));
+          setRows(detailedStudents.map((student: IStudent, index: number) => ({
             id: index + 1,
             studentId: student.studentId,
             studentName: `${student.firstName} ${student.lastName}`,

@@ -13,6 +13,7 @@ export async function enrollStudent(studentData: any) {
     headers: {
       ...GET_DEFAULT_HEADERS(),
       "Content-Type": "application/json",
+      "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
     },
     body: JSON.stringify(studentData),
   });
@@ -27,7 +28,8 @@ export async function fetchStudentById(studentId: string) {
   const response = await fetch(`${BASE_API_URL}/student/GetById/${studentId}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      ...GET_DEFAULT_HEADERS(),
+      // ...GET_DEFAULT_HEADERS(),
+      "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
     },
   });
   if (!response.ok) {
@@ -42,6 +44,7 @@ export async function fetchAssignmentsForClass(classId: string) {
     method: "GET",
     headers: {
       ...GET_DEFAULT_HEADERS(),
+      "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
     },
   });
   if (!response.ok) {
@@ -55,7 +58,8 @@ export async function fetchStudentsInClass(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      ...GET_DEFAULT_HEADERS(),
+      "Content-Type": "application/json",
+      "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
     },
   });
   if (!response.ok) {
@@ -90,16 +94,9 @@ function App() {
     fetchData();
   }, [currClassId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (currClassId) {
-        const processedData = await calcAllFinalGrade(currClassId);
-        setGradeData(processedData);
-      }
-    };
-
-    fetchData();
-  }, [currClassId]);
+  function handleClassChange(event: SelectChangeEvent) {
+    setCurrClassId(event.target.value as string);
+  }
 
   return (
     <div style={{ width: "100vw", height: "100vh" }}>

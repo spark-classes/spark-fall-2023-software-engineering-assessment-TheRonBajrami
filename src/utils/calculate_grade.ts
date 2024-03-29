@@ -96,5 +96,16 @@ export async function fetchStudents(classId: string) {
 }
 
 export async function fetchStudentsInClass(classId: string) {
-  // Function implementation
+  const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-functions-key": TOKEN,
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch students in class");
+    return [];
+  }
+  return await response.json();
 }
