@@ -70,7 +70,6 @@ This file is where you can store interfaces and types for data you receive from 
 This file stores some stub functions to help you get started on the process of calculating all the final grades. Feel free to add more code to this file.
 
 ### `globals.ts`
-
 This file stores some global variables. You will need to fill them out as specified in the "Getting Started" section of this document.
 
 ### MUI Components to use

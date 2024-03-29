@@ -7,7 +7,7 @@
  * Anything that has a type of "undefined" you will need to replace with something.
  */
 import { IUniversityClass, IAssignment, IStudentGrade } from "../types/api_types";
-import { GET_DEFAULT_HEADERS, BASE_API_URL, MY_BU_ID } from "../globals"; // Added MY_BU_ID import
+import { GET_DEFAULT_HEADERS, BASE_API_URL, MY_BU_ID, TOKEN } from "../globals"; // Added MY_BU_ID import
 
 /**
  * This function might help you write the function below.
@@ -36,7 +36,7 @@ export async function calculateStudentFinalGrade(
  * @returns Some data structure that has a list of each student and their final grade.
  */
 export async function calcAllFinalGrade(classID: string): Promise<IStudentGrade[]> {
-  const classes = await fetchClasses("Fall2023");
+  const classes = await fetchClasses("fall2022");
   const classAssignments = await fetchAssignments(classID);
   const students = await fetchStudents(classID);
 
@@ -51,11 +51,11 @@ export async function calcAllFinalGrade(classID: string): Promise<IStudentGrade[
 }
 
 export async function fetchClasses(semester: string) {
-  const response = await fetch(`${BASE_API_URL}/class/listBySemester/${semester}`, {
+  const response = await fetch(`${BASE_API_URL}/class/listBySemester/${semester}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      ...GET_DEFAULT_HEADERS(),
-      "BU-ID": MY_BU_ID,
+      "Content-Type": "application/json",
+      "x-functions-key": TOKEN,
     },
   });
   if (!response.ok) {
@@ -66,11 +66,11 @@ export async function fetchClasses(semester: string) {
 }
 
 export async function fetchAssignments(classId: string) {
-  const response = await fetch(`${BASE_API_URL}/class/listAssignments/${classId}`, {
+  const response = await fetch(`${BASE_API_URL}/class/listAssignments/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      ...GET_DEFAULT_HEADERS(),
-      "BU-ID": MY_BU_ID,
+      "Content-Type": "application/json",
+      "x-functions-key": TOKEN,
     },
   });
   if (!response.ok) {
@@ -81,11 +81,11 @@ export async function fetchAssignments(classId: string) {
 }
 
 export async function fetchStudents(classId: string) {
-  const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}`, {
+  const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      ...GET_DEFAULT_HEADERS(),
-      "BU-ID": MY_BU_ID,
+      "Content-Type": "application/json",
+      "x-functions-key": TOKEN,
     },
   });
   if (!response.ok) {
@@ -93,4 +93,8 @@ export async function fetchStudents(classId: string) {
     return [];
   }
   return await response.json();
+}
+
+export async function fetchStudentsInClass(classId: string) {
+  // Function implementation
 }
