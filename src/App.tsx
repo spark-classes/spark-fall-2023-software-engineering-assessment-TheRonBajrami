@@ -72,6 +72,22 @@ export async function fetchStudentsInClass(classId: string) {
   return await response.json();
 }
 
+// Fetches the grades of a student in a specific class from the API.
+export async function fetchStudentGradesInClass(studentId: string, classId: string) {
+  const response = await fetch(`${BASE_API_URL}/student/listGrades/${studentId}/${classId}?buid=${MY_BU_ID}`, {
+    method: "GET",
+    headers: {
+      ...GET_DEFAULT_HEADERS(),
+      "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch student grades in class");
+    return null;
+  }
+  return await response.json();
+}
+
 // The main component of the application, responsible for rendering the UI and managing state.
 function App() {
   const [currClassId, setCurrClassId] = useState<string>("");
@@ -136,7 +152,7 @@ function App() {
           <Typography variant="h4" gutterBottom>
             Final Grades
           </Typography>
-          <GradeTable classData={classList} gradeData={gradeData} />
+          <GradeTable classData={classList} gradeData={gradeData} selectedClassId={currClassId} />
         </Grid>
       </Grid>
     </div>

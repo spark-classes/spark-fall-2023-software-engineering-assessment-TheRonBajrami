@@ -142,3 +142,18 @@ export async function fetchStudentsInClass(classId: string) {
   }
   return await response.json();
 }
+
+export async function fetchStudentGradesInClass(studentId: string, classId: string) {
+  const response = await fetch(`${BASE_API_URL}/student/listGrades/${studentId}/${classId}?buid=${MY_BU_ID}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-functions-key": TOKEN,
+    },
+  });
+  if (!response.ok) {
+    console.error("Failed to fetch student grades in class");
+    return [];
+  }
+  return await response.json();
+}
