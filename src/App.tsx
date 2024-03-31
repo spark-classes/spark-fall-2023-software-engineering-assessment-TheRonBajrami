@@ -6,7 +6,7 @@ import { IUniversityClass, IStudentGrade } from "./types/api_types";
 import { GradeTable } from './components/GradeTable';
 import { fetchClasses, fetchAssignments, fetchStudents, calcAllFinalGrade } from './utils/calculate_grade';
 
-// Added API utility functions based on the instructions
+// Enrolls a student with the provided data to the API.
 export async function enrollStudent(studentData: any) {
   const response = await fetch(`${BASE_API_URL}/student?buid=${MY_BU_ID}`, {
     method: "POST",
@@ -24,11 +24,12 @@ export async function enrollStudent(studentData: any) {
   return await response.json();
 }
 
+// Fetches details of a student by their ID from the API.
 export async function fetchStudentById(studentId: string) {
   const response = await fetch(`${BASE_API_URL}/student/GetById/${studentId}?buid=${MY_BU_ID}`, {
     method: "GET",
     headers: {
-      // ...GET_DEFAULT_HEADERS(),
+      ...GET_DEFAULT_HEADERS(),
       "x-functions-key": "6se7z2q8WGtkxBlXp_YpU-oPq53Av-y_GSYiKyS_COn6AzFuTjj4BQ==", // Manually set token
     },
   });
@@ -39,6 +40,7 @@ export async function fetchStudentById(studentId: string) {
   return await response.json();
 }
 
+// Fetches a list of assignments for a specific class from the API.
 export async function fetchAssignmentsForClass(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listAssignments/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
@@ -54,6 +56,7 @@ export async function fetchAssignmentsForClass(classId: string) {
   return await response.json();
 }
 
+// Fetches a list of students enrolled in a specific class from the API.
 export async function fetchStudentsInClass(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
@@ -69,11 +72,13 @@ export async function fetchStudentsInClass(classId: string) {
   return await response.json();
 }
 
+// The main component of the application, responsible for rendering the UI and managing state.
 function App() {
   const [currClassId, setCurrClassId] = useState<string>("");
   const [classList, setClassList] = useState<IUniversityClass[]>([]);
   const [gradeData, setGradeData] = useState<IStudentGrade[]>([]);
 
+  // Fetches and sets the list of classes available for the current semester.
   useEffect(() => {
     const fetchClassList = async () => {
       const classes = await fetchClasses("fall2022");
@@ -83,6 +88,7 @@ function App() {
     fetchClassList();
   }, []);
 
+  // Fetches and sets the grade data for the currently selected class.
   useEffect(() => {
     const fetchData = async () => {
       if (currClassId) {
@@ -94,6 +100,7 @@ function App() {
     fetchData();
   }, [currClassId]);
 
+  // Handles changes to the class selection dropdown.
   function handleClassChange(event: SelectChangeEvent) {
     setCurrClassId(event.target.value as string);
   }

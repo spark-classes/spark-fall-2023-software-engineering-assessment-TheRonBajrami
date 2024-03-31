@@ -22,7 +22,7 @@ export function dummyData() {
  * You might need to change the signature of this function.
  *
  */
-
+// Component for displaying the grade table. Requires class data and grade data as props.
 export const GradeTable = ({ classData, gradeData }: { classData: IUniversityClass[], gradeData: IStudentGrade[] }) => {
   const columns = [
     { field: 'studentId', headerName: 'Student ID', width: 120 },
@@ -36,6 +36,7 @@ export const GradeTable = ({ classData, gradeData }: { classData: IUniversityCla
   const [rows, setRows] = useState<{ id: number, studentId: string, studentName: string, classId: string, className: string, semester: string, finalGrade: number }[]>([]);
 
   useEffect(() => {
+    // Fetches detailed student information and sets the rows for the DataGrid based on the provided class and grade data.
     const fetchData = async () => {
       if (classData.length > 0 && gradeData.length > 0) {
         const students: IStudent[] | undefined = await fetchStudentsInClass(classData[0].classId);

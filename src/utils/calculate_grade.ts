@@ -10,10 +10,14 @@ import { IUniversityClass, IAssignment, IStudentGrade } from "../types/api_types
 import { GET_DEFAULT_HEADERS, BASE_API_URL, MY_BU_ID, TOKEN } from "../globals"; // Added MY_BU_ID import
 
 /**
- * This function might help you write the function below.
- * It retrieves the final grade for a single student based on the passed params.
- * 
- * If you are reading here and you haven't read the top of the file...go back.
+ * Calculates the final grade for a single student in a specific class.
+ * It iterates over all assignments of the class, applying the grade and weight
+ * to compute the final grade.
+ *
+ * @param studentID The unique identifier for the student.
+ * @param classAssignments An array of assignments related to the class.
+ * @param klass The class object containing details about the class.
+ * @returns The final grade as a number.
  */
 export async function calculateStudentFinalGrade(
   studentID: string,
@@ -28,12 +32,12 @@ export async function calculateStudentFinalGrade(
 }
 
 /**
- * You need to write this function! You might want to write more functions to make the code easier to read as well.
- * 
- *  If you are reading here and you haven't read the top of the file...go back.
- * 
- * @param classID The ID of the class for which we want to calculate the final grades
- * @returns Some data structure that has a list of each student and their final grade.
+ * Calculates the final grades for all students in a given class.
+ * It fetches classes, assignments, and students related to the classID,
+ * then computes each student's final grade using calculateStudentFinalGrade.
+ *
+ * @param classID The unique identifier for the class.
+ * @returns An array of objects, each containing a studentId and their finalGrade.
  */
 export async function calcAllFinalGrade(classID: string): Promise<IStudentGrade[]> {
   const classes = await fetchClasses("fall2022");
@@ -50,6 +54,13 @@ export async function calcAllFinalGrade(classID: string): Promise<IStudentGrade[
   return studentGrades;
 }
 
+/**
+ * Fetches a list of classes for a given semester.
+ * It makes a GET request to the API, appending the semester and BU ID to the URL.
+ *
+ * @param semester The semester for which to fetch classes (e.g., "fall2022").
+ * @returns An array of class objects if successful, or an empty array on failure.
+ */
 export async function fetchClasses(semester: string) {
   const response = await fetch(`${BASE_API_URL}/class/listBySemester/${semester}?buid=${MY_BU_ID}`, {
     method: "GET",
@@ -65,6 +76,13 @@ export async function fetchClasses(semester: string) {
   return await response.json();
 }
 
+/**
+ * Fetches a list of assignments for a given class.
+ * It makes a GET request to the API, appending the classId and BU ID to the URL.
+ *
+ * @param classId The unique identifier for the class.
+ * @returns An array of assignment objects if successful, or an empty array on failure.
+ */
 export async function fetchAssignments(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listAssignments/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
@@ -80,6 +98,13 @@ export async function fetchAssignments(classId: string) {
   return await response.json();
 }
 
+/**
+ * Fetches a list of students enrolled in a given class.
+ * It makes a GET request to the API, appending the classId and BU ID to the URL.
+ *
+ * @param classId The unique identifier for the class.
+ * @returns An array of student objects if successful, or an empty array on failure.
+ */
 export async function fetchStudents(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
@@ -95,6 +120,14 @@ export async function fetchStudents(classId: string) {
   return await response.json();
 }
 
+/**
+ * Fetches a list of students enrolled in a given class.
+ * Similar to fetchStudents, but specifically designed to be used within the GradeTable component.
+ * It makes a GET request to the API, appending the classId and BU ID to the URL.
+ *
+ * @param classId The unique identifier for the class.
+ * @returns An array of student objects if successful, or an empty array on failure.
+ */
 export async function fetchStudentsInClass(classId: string) {
   const response = await fetch(`${BASE_API_URL}/class/listStudents/${classId}?buid=${MY_BU_ID}`, {
     method: "GET",
