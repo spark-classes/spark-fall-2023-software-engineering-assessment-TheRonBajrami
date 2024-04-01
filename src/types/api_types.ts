@@ -34,3 +34,4 @@ export interface IStudentGrade {
   studentId: string;
   finalGrade: number;
 }
+
