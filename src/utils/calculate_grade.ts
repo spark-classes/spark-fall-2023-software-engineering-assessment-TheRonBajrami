@@ -26,7 +26,16 @@ export async function calculateStudentFinalGrade(
 ): Promise<number> {
   let finalGrade = 0;
   classAssignments.forEach(assignment => {
-    finalGrade += assignment.grade * assignment.weight;
+    const numericGrade = parseFloat(String(assignment.grade));
+    if (isNaN(numericGrade)) {
+      console.error("Invalid numeric grade:", assignment.grade);
+      // Handle the error or set a default value
+    }
+    const numericWeight = parseFloat(String(assignment.weight));
+    finalGrade += numericGrade * numericWeight;
+    console.log("Numeric Grade:", numericGrade);
+    console.log("Numeric Weight:", numericWeight);
+    console.log("Current Final Grade:", finalGrade);
   });
   return finalGrade;
 }
@@ -95,7 +104,8 @@ export async function fetchAssignments(classId: string) {
     console.error("Failed to fetch assignments");
     return [];
   }
-  return await response.json();
+  return await response.json() || [];
+  
 }
 
 /**
@@ -153,7 +163,9 @@ export async function fetchStudentGradesInClass(studentId: string, classId: stri
   });
   if (!response.ok) {
     console.error("Failed to fetch student grades in class");
-    return [];
+    return null;
   }
   return await response.json();
+
+  
 }
