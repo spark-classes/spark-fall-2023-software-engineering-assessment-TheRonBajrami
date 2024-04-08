@@ -1,3 +1,4 @@
+[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=14461329&assignment_repo_type=AssignmentRepo)
 #  Spark! Software Engineering Assessment
 
 This repo has the starter code for the Spark! Software Engineering Assessment. It contains everything that is needed to get started with this project. **Please read this entire file and follow the directions closely before attempting to start.**
@@ -69,7 +70,6 @@ This file is where you can store interfaces and types for data you receive from 
 This file stores some stub functions to help you get started on the process of calculating all the final grades. Feel free to add more code to this file.
 
 ### `globals.ts`
-
 This file stores some global variables. You will need to fill them out as specified in the "Getting Started" section of this document.
 
 ### MUI Components to use
